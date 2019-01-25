@@ -4,6 +4,8 @@ html, body {
 }
 
 .main-content {
+    box-sizing: border-box;
+    padding-top: 5px;
     height: 100%;
 }
 
@@ -15,20 +17,65 @@ html, body {
     float: right; 
     width: calc(100% - 959px - 5px * 2); /* 100% - width(svg_map) - margin(info-container) * 2 */
     border-radius: 8px;
-    height: calc(100% - 5px * 2 - 30px - 5px); /* 100% - margin(info-container) * 2 - font-size(title-text) - margin-top(title-text)*/ 
+    height: calc(100% - 5px * 2 - 30px); /* 100% - margin(info-container) * 2 - font-size(title-text) */ 
     margin: 5px;
-    background-color: rgba(204, 204, 204, 1.0);
+    background-color: rgba(204, 204, 204, 0.5);
 }
 
 .title-text {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
-    margin: 5px 0 0 0;
+    margin: 0;
     font-size: 30px;
     line-height: 1em;
 }
 
+.heading-text {
+    display: inline-block;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1em;
+}
+
+.body-text {
+    display: inline-block;
+    margin: 5px 0 5px 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 #state-title {
+    margin-top: 5px;
     font-size: 20px;
 }
 
+.add-candidates {
+    padding: 10px;
+    width: calc(100% - 5px - 10px * 2); /* 100%  - margin(add-candidates) - padding(add-candidates) * 2*/
+    background-color: rgba(204, 204, 204, 0.5);
+    border-radius: 7px;
+    margin: 0 0 5px 5px;
+}
+
+.colour-div {
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    margin-right: 10px;
+    height: 20px;
+    width: 40px;
+}
+
+.candidates-list {
+    columns: 3;
+    -webkit-columns: 3;
+    -moz-columns: 3;
+}
+
+#add-candidate-button {
+    float: right;
+}
+
+#add-candidate-button:hover {
+    cursor: pointer;
+}
