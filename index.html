@@ -8,6 +8,38 @@
     <body>
         <div class="main-content">
             <h1 class="title-text">US Democratic Primary Interactive Map</h1>
+            <div id="add-candidate-popup">
+                <h4 class="minor-title">Add Candidate</h4>
+                <form id="add-candidate-form">
+                    <p class="body-text">Candidate Name: <input type=text class="add-candidate-input" name="candidate_name" autocomplete="off" required></p>
+                    <p class="body-text">Select a color: </p>
+                    <ul class="colour-list">
+                        <li><label><input type="radio" name="colour" value="red" required><div style="background-color: red;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="blue"><div style="background-color: blue;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="green"><div style="background-color: green;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="yellow"><div style="background-color: yellow;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="orange"><div style="background-color: orange;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="indigo"><div style="background-color: indigo;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="violet"><div style="background-color: violet;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="pink"><div style="background-color: pink;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="aqua"><div style="background-color: aqua;" class="colour-div"></div></label></li>
+                        <li><label><input type="radio" name="colour" value="brown"><div style="background-color: brown;" class="colour-div"></div></label></li>
+                    </ul>
+                    <button class="submit-button" type="submit">Submit Candidate</button>
+                </form>
+                <button onclick="close_add_candidate()">Close</button>
+            </div>
+            <div id="remove-candidate-popup">
+                <h4 class="minor-title">Remove Candidate</h4>
+                <form id="remove-candidate-form">
+                    <p class="body-text">Select candidates to remove: </p>
+                    <ul class="remove-candidates-list">
+                        <li><p class="body-text">Error: You need to add a candidate before you can remove a candidate.</p></li>
+                    </ul>
+                    <button class="submit-button" type="submit">Confirm Removal</button>
+                </form>
+                <button onclick="close_remove_candidate()">Close</button>
+            </div>
             <div class="map-container">
                 <svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.0" width="958.69" height="592.78998" id="svg2275" sodipodi:version="0.32" inkscape:version="0.47 r22583" sodipodi:docname="Blank_US_Map_with_borders.svg" inkscape:output_extension="org.inkscape.output.svg.inkscape" style="display:inline">
                     <g inkscape:groupmode="layer" id="layer1" inkscape:label="states" style="display:inline">
@@ -187,19 +219,15 @@
                 </svg>
                 <div class="add-candidates">
                     <h4 class="heading-text">Candidates:</h4>
-                    <button id="add-candidate-button">Add Candidate</button>
-                    <ul class="candidates-list">
-                        <li><div style="background-color: red;" class="colour-div"></div><p class="body-text">Bernie Sanders</p></li>
-                        <li><div style="background-color: blue;" class="colour-div"></div><p class="body-text">Joe Biden</p></li>
-                        <li><div style="background-color: orange;" class="colour-div"></div><p class="body-text">Elizabeth Warren</p></li>
-                        <li><div style="background-color: green;" class="colour-div"></div><p class="body-text">Richard Ojeda</p></li>
-                        <li><div style="background-color: indigo;" class="colour-div"></div><p class="body-text">Kamala Harris</p></li>
-                        <li><div style="background-color: yellow;" class="colour-div"></div><p class="body-text">Julian Castro</p></li>
+                    <button id="add-candidate-button" class="submit-button" onclick="open_add_candidate()">Add Candidate</button>
+                    <button id="remove-candidate-button" class="submit-button" onclick="open_remove_candidate()">Remove Candidate</button>
+                    <ul id="list-of-candidates" class="candidates-list">
+                        <p class="body-text">Please add a candidate.</p>
                     </ul>
                 </div>
             </div>
-            <div class="info-container">
-                <h1 class="title-text" id="state-title">Click on a state to see info</h1>
+            <div id="state-info" class="info-container">
+                <h1 class="title-text state-title">Click on a state to see info</h1>
             </div>
         </div>
         <script src="state_interactions.js"></script>

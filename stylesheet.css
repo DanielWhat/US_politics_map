@@ -14,12 +14,16 @@ html, body {
 }
 
 .info-container {
+    position: relative;
     float: right; 
-    width: calc(100% - 959px - 5px * 2); /* 100% - width(svg_map) - margin(info-container) * 2 */
+    width: calc(100% - 959px - 5px * 2 - 2px * 2 - 10px * 2); /* 100% - width(svg_map) - margin(info-container) * 2 - border(info-container) * 2 - padding(info-container) * 2*/
     border-radius: 8px;
-    height: calc(100% - 5px * 2 - 30px); /* 100% - margin(info-container) * 2 - font-size(title-text) */ 
+    height: calc(100% - 5px * 2 - 30px - 2px * 2 - 10px * 2); /* 100% - margin(info-container) * 2 - font-size(title-text) - border(info-container) * 2 - padding(info-container) * 2*/ 
     margin: 5px;
-    background-color: rgba(204, 204, 204, 0.5);
+    background-color: rgb(245, 245, 245);
+    border: solid rgb(124, 176, 255) 2px; /* rgb(98, 98, 247) rgb(124, 124, 249) rgb(124, 176, 255)*/
+    padding: 10px;
+    z-index: 1;
 }
 
 .title-text {
@@ -28,6 +32,7 @@ html, body {
     margin: 0;
     font-size: 30px;
     line-height: 1em;
+    color: rgb(48, 48, 48);
 }
 
 .heading-text {
@@ -36,15 +41,29 @@ html, body {
     margin: 0;
     font-size: 18px;
     line-height: 1em;
+    color: rgb(48, 48, 48);
+}
+
+.minor-title {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1em;
+    color: rgb(48, 48, 48);
+    text-align: center;
+    
 }
 
 .body-text {
-    display: inline-block;
-    margin: 5px 0 5px 0;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: rgb(48, 48, 48);
 }
 
-#state-title {
+.candidate-name {
+    display: inline-block;
+    margin: 5px 0 5px 0;
+}
+
+.state-title {
     margin-top: 5px;
     font-size: 20px;
 }
@@ -52,7 +71,7 @@ html, body {
 .add-candidates {
     padding: 10px;
     width: calc(100% - 5px - 10px * 2); /* 100%  - margin(add-candidates) - padding(add-candidates) * 2*/
-    background-color: rgba(204, 204, 204, 0.5);
+    background-color: rgb(245, 245, 245);
     border-radius: 7px;
     margin: 0 0 5px 5px;
 }
@@ -60,7 +79,7 @@ html, body {
 .colour-div {
     display: inline-block;
     position: relative;
-    top: 4px;
+    top: 4.5px;
     margin-right: 10px;
     height: 20px;
     width: 40px;
@@ -72,10 +91,94 @@ html, body {
     -moz-columns: 3;
 }
 
+.colour-list {
+    list-style: none; 
+    position: relative;
+    padding: 0;
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
+    
+}
+
+.colour-list .colour-div {
+    margin-left: 10px;
+}
+
+.remove-candidates-list {
+    list-style: none; 
+    position: relative;
+    padding: 0;
+}
+
+#add-candidate-popup {
+    display: none;
+    position: absolute;
+    left: calc(50% - 500px * 0.5);
+    top: calc(50% - 300px * 0.5);
+    width: 500px;
+    background-color: whitesmoke;
+    border-radius: 7px;
+    border: solid rgb(124, 176, 255) 2px;
+    padding: 10px;
+    z-index: 5;
+}
+
+.add-candidate-input {
+    width: 300px;
+    font-size: 17px;
+}
+
 #add-candidate-button {
     float: right;
 }
 
-#add-candidate-button:hover {
+#remove-candidate-button {
+    float: right;
+    margin-right: 10px;
+}
+
+.submit-button {
+    padding: 10px;
+    border-radius: 7px;
+    background-color: white;
+    -webkit-transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease;
+    border-style: solid;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-width: 1px;
+    
+}
+
+.submit-button:hover {
+    cursor: pointer;
+    background-color: rgba(204, 204, 204, 0.25);
+}
+
+.submit-results {
+    position: absolute;
+    bottom: 10px;
+}
+
+#layer1 path:hover {
+    opacity: 0.6;
     cursor: pointer;
 }
+
+#remove-candidate-popup {
+    display: none;
+    position: absolute;
+    left: calc(50% - 500px * 0.5);
+    top: calc(50% - 300px * 0.5);
+    width: 500px;
+    background-color: whitesmoke;
+    border-radius: 7px;
+    border: solid rgb(124, 176, 255) 2px;
+    padding: 10px;
+    z-index: 5;
+}
+
+.candidate-percentage-input {
+    font-size: 17px;
+}
+
