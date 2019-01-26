@@ -19,7 +19,6 @@ class State {
 
 const map_state = {
     currently_selected_state: "None",
-    previously_selected_state: "None"
 };
 
 
@@ -92,7 +91,6 @@ function display_state_data(event) {
         old_state.style.opacity = ""; /* This takes it back to the default opacity specified in the css */
     }
     
-    map_state.previously_selected_state = map_state.currently_selected_state;
     map_state.currently_selected_state = event.target.id;
     
     if (old_state !== null && old_state.id === new_state.id) { /* user has clicked on the same state twice */
@@ -139,6 +137,23 @@ function close_remove_candidate() {
 }
 
 
+function set_form_add_event_handler() {
+    document.getElementById('state-results-form').addEventListener('input', function (e) {
+        let form = document.getElementById('state-results-form');
+        let unallocated_note = document.getElementById('unallocated-note');
+        let allocated_percent = 0;
+        
+        for(let i = 0; i < form.elements.length; i++) {
+            if (form.elements[i].type === "number") {
+                allocated_percent += parseFloat(form.elements[i].value);
+            }
+        }
+        
+        unallocated_note.innerHTML = `${100 - allocated_percent}% of the vote is unallocated`;
+    });
+}
+
+
 
 function refresh_state_data() {
     
@@ -147,7 +162,7 @@ function refresh_state_data() {
     let state_html = "";
     
     if (map_state.currently_selected_state === "None") { /* the user has no state selected currently */
-        state_info.innerHTML = '<h1 class="title-text state-title">Click on a state to see info</h1>';
+        state_info.innerHTML = '<h1 class="title-text state-title">Click on a state to see info</h1><form id="state-results-form"></form>';
         return 0; /* exit the function */
     }
     
@@ -155,21 +170,26 @@ function refresh_state_data() {
                   <p class="body-text">Primary Type: Open Primary</p>
                   <p class="body-text">Pledged Delegates: ${state.delegates}</p>`;
     
-    state_html += "<form onsubmit='state_results_handler(event)'><p class='body-text'>State results: </p><ul>";
+    state_html += "<form id='state-results-form' onsubmit='state_results_handler(event)'><p class='body-text'>State results: </p><ul>";
     
     if (candidates_list.length === 0) {
         state_html += '<p class="body-text">You need to add candidates before you can enter results.</p>';
     }
     
+    let allocated_percent = 0;
+    
     for (let i = 0; i < candidates_list.length; i++) {
         /* Value is 0 by default, but otherwise make it equal to what % we have recorded for that candidate */
         let value = (Object.keys(states_dict[state.id].results).length === 0) ? 0 : states_dict[state.id].results[candidates_list[i].name]; 
+        allocated_percent += value;
         
         state_html += `<li><p class="body-text">${candidates_list[i].name}: <input class="candidate-percentage-input" type="number" min="0" max="100" value="${value}" name="${candidates_list[i].name}" step="0.1" required> %</p></li>`
     }
-    state_html += "</ul><button class='submit-button submit-results' type='submit'>Confirm Results</button></form>";
+    
+    state_html += `</ul><div class='bottom-state-box'><button class='submit-button submit-results' type='submit'>Confirm Results</button><p class='body-text note-text' id='unallocated-note'>${100 - allocated_percent}% of the vote is unallocated</p></div></form>`;
     state_info.innerHTML = state_html;
     
+    set_form_add_event_handler();
 }
 
 
@@ -191,7 +211,7 @@ function refresh_candidates() {
         ul_candidates_to_remove.innerHTML += `<li><label><p class="body-text"><input type="checkbox" name="candidates" value="${candidates_list[i].name}"> ${candidates_list[i].name}</p></label></li>`;
     }
     
-    refresh_state_data(map_state.currently_selected_state);     
+    refresh_state_data();     
 }
 
 
@@ -202,6 +222,8 @@ function remove_candidates(candidate_names) {
     candidates_list = candidates_list.filter(function (candidate) {
         return !candidate_names.includes(candidate.name);
     });
+    
+    /*Todo: you need to also update the map to remove any states they won etc.*/
 }
 
 
@@ -242,13 +264,32 @@ function update_delegate_count(state) {
         results_list[i][1] = Math.floor(results_list[i][1] * state.delegates); 
     }
     
+    let delegates_apportioned = 0;
+    results_remainders.sort((remainder_a, remainder_b) => {
+        return remainder_b[1] - remainder_a[1];
+    });
+    
+    console.log(results_remainders);
+    
     for (i = 0; i < results_list.length; i++) {
         let index = candidates_list.findIndex((candidate) => {
             return candidate.name === results_list[i][0]
         });
         
+        delegates_apportioned += results_list[i][1];
         candidates_list[index].delegates += results_list[i][1];
     }
+    
+    while(delegates_apportioned < state.delegates) {
+        let index = candidates_list.findIndex((candidate) => {
+            return candidate.name === results_remainders[0][0]
+        });
+        
+        candidates_list[index].delegates++;
+        delegates_apportioned++;
+        results_remainders.shift();
+    }
+    
 }
 
 
@@ -292,7 +333,9 @@ function state_results_handler(e) {
     
     results_dict = results_str_to_float(results_dict);
     
-    record_state_results(results_dict);
+    if (Object.keys(results_dict).length !== 0) {
+        record_state_results(results_dict);
+    }
     refresh_candidates();
 }
 
