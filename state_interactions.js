@@ -8,10 +8,11 @@ class Candidate {
 
 
 class State {
-    constructor (id, name, delegates, results={}) {
+    constructor (id, name, delegates, primary_type, results={}) {
         this.id = id;
         this.name = name;
         this.delegates = delegates;
+        this.primary_type = primary_type;
         this.results = results;
     }
 }
@@ -23,56 +24,56 @@ const map_state = {
 
 
 const states_dict = {
-    "AL": new State("AL", "Alabama", 52), 
-    "AK": new State("AK", "Alaska", 14), 
-    "AZ": new State("AZ", "Arizona", 67), 
-    "AR": new State("AR", "Arkansas", 31),
-    "CA": new State("CA", "California", 416),
-    "CO": new State("CO", "Colorado", 67),
-    "CT": new State("CT", "Connecticut", 49),
-    "DE": new State("DE", "Delaware", 17),
-    "FL": new State("FL", "Florida", 219),
-    "GA": new State("GA", "Georgia", 105),
-    "HI": new State("HI", "Hawaii", 22),
-    "ID": new State("ID", "Idaho", 20),
-    "IL": new State("IL", "Illinois", 155),
-    "IN": new State("IN", "Indiana", 70),
-    "IA": new State("IA", "Iowa", 41),
-    "KS": new State("KS", "Kansas", 33),
-    "KY": new State("KY", "Kentucky", 46),
-    "LA": new State("LA", "Louisiana", 50),
-    "ME": new State("ME", "Maine", 24),
-    "MD": new State("MD", "Maryland", 79),
-    "MA": new State("MA", "Massachusetts", 91),
-    "MI": new State("MI", "Michigan", 125),
-    "MN": new State("MN", "Minnesota", 75),
-    "MS": new State("MS", "Mississippi", 36),
-    "MO": new State("MO", "Missouri", 68),
-    "MT": new State("MT", "Montana", 16),
-    "NE": new State("NE", "Nebraska", 25),
-    "NV": new State("NV", "Nevada", 36),
-    "NH": new State("NH", "New Hamshire", 24),
-    "NJ": new State("NJ", "New Jersey", 107),
-    "NM": new State("NM", "New Mexico", 29),
-    "NY": new State("NY", "New York", 224),
-    "NC": new State("NC", "North Carolina", 110),
-    "ND": new State("ND", "North Dakota", 14),
-    "OH": new State("OH", "Ohio", 136),
-    "OK": new State("OK", "Oklahoma", 37),
-    "OR": new State("OR", "Oregon", 52),
-    "PA": new State("PA", "Pennsylvania", 153),
-    "RI": new State("RI", "Rhode Island", 31),
-    "SC": new State("SC", "South Carolina", 54),
-    "SD": new State("SD", "South Dakota", 14),
-    "TN": new State("TN", "Tennessee", 64),
-    "TX": new State("TX", "Texas", 228),
-    "UT": new State("UT", "Utah", 29),
-    "VT": new State("VT", "Vermont", 16),
-    "VA": new State("VA", "Virginia", 99),
-    "WA": new State("WA", "Washington", 89),
-    "WV": new State("WV", "West Virginia", 24),
-    "WI": new State("WI", "Wisconsin", 77),
-    "WY": new State("WY", "Wyoming", 13),
+    "AL": new State("AL", "Alabama", 52, "Open primary"), 
+    "AK": new State("AK", "Alaska", 14, "Closed caucus"), 
+    "AZ": new State("AZ", "Arizona", 67, "Closed primary"), 
+    "AR": new State("AR", "Arkansas", 31, "Open primary"),
+    "CA": new State("CA", "California", 416, "Semi-closed primary"),
+    "CO": new State("CO", "Colorado", 67, "Closed caucus"),
+    "CT": new State("CT", "Connecticut", 49, "Closed primary"),
+    "DE": new State("DE", "Delaware", 17, "Closed primary"),
+    "FL": new State("FL", "Florida", 219, "Closed primary"),
+    "GA": new State("GA", "Georgia", 105, "Open primary"),
+    "HI": new State("HI", "Hawaii", 22, "Semi-closed caucus"),
+    "ID": new State("ID", "Idaho", 20, "Open caucus"),
+    "IL": new State("IL", "Illinois", 155, "Open primary"),
+    "IN": new State("IN", "Indiana", 70, "Open primary"),
+    "IA": new State("IA", "Iowa", 41, "Semi-open caucus"),
+    "KS": new State("KS", "Kansas", 33, "Closed caucus"),
+    "KY": new State("KY", "Kentucky", 46, "Closed primary"),
+    "LA": new State("LA", "Louisiana", 50, "Closed primary"),
+    "ME": new State("ME", "Maine", 24, "Closed caucus"),
+    "MD": new State("MD", "Maryland", 79, "Closed primary"),
+    "MA": new State("MA", "Massachusetts", 91, "Semi-closed primary"),
+    "MI": new State("MI", "Michigan", 125, "Open primary"),
+    "MN": new State("MN", "Minnesota", 75, "Open caucus"),
+    "MS": new State("MS", "Mississippi", 36, "Open primary"),
+    "MO": new State("MO", "Missouri", 68, "Open primary"),
+    "MT": new State("MT", "Montana", 16, "Open primary"),
+    "NE": new State("NE", "Nebraska", 25, "Closed caucus"),
+    "NV": new State("NV", "Nevada", 36, "Closed caucus"),
+    "NH": new State("NH", "New Hamshire", 24, "Semi-closed primary"),
+    "NJ": new State("NJ", "New Jersey", 107, "Semi-closed primary"),
+    "NM": new State("NM", "New Mexico", 29, "Closed primary"),
+    "NY": new State("NY", "New York", 224, "Closed primary"),
+    "NC": new State("NC", "North Carolina", 110, "Semi-closed primary"),
+    "ND": new State("ND", "North Dakota", 14, "Open caucus"),
+    "OH": new State("OH", "Ohio", 136, "Semi-open primary"),
+    "OK": new State("OK", "Oklahoma", 37, "Semi-closed primary"),
+    "OR": new State("OR", "Oregon", 52, "Closed primary"),
+    "PA": new State("PA", "Pennsylvania", 153, "Closed primary"),
+    "RI": new State("RI", "Rhode Island", 31, "Semi-closed primary"),
+    "SC": new State("SC", "South Carolina", 54, "Open primary"),
+    "SD": new State("SD", "South Dakota", 14, "Semi-closed primary"),
+    "TN": new State("TN", "Tennessee", 64, "Open primary"),
+    "TX": new State("TX", "Texas", 228, "Open primary"),
+    "UT": new State("UT", "Utah", 29, "Semi-open caucus"),
+    "VT": new State("VT", "Vermont", 16, "Open primary"),
+    "VA": new State("VA", "Virginia", 99, "Open primary"),
+    "WA": new State("WA", "Washington", 89, "Open caucus"),
+    "WV": new State("WV", "West Virginia", 24, "Semi-closed primary"),
+    "WI": new State("WI", "Wisconsin", 77, "Open primary"),
+    "WY": new State("WY", "Wyoming", 13, "Closed caucus"),
 };
 
 
@@ -167,7 +168,7 @@ function refresh_state_data() {
     }
     
     state_html = `<h1 class="title-text state-title">${state.name} - ${state.id}</h1>
-                  <p class="body-text">Primary Type: Open Primary</p>
+                  <p class="body-text">Primary Type: ${state.primary_type}</p>
                   <p class="body-text">Pledged Delegates: ${state.delegates}</p>`;
     
     state_html += "<form id='state-results-form' onsubmit='state_results_handler(event)'><p class='body-text'>State results: </p><ul>";
@@ -217,13 +218,32 @@ function refresh_candidates() {
 
 
 function remove_candidates(candidate_names) {
-    /* Takes a list of candidate names and removes them from candidates list */
+    /* Takes a list of candidate names and removes them from candidates list, and removes them from any state results*/
+    
+    /*remove them from the results of the states*/
+    const state_keys = Object.keys(states_dict);
+    
+    for (let i = 0; i < candidate_names.length; i++) {
+        let candidate = candidates_list.find((candidate_obj) => {return candidate_names[i] === candidate_obj.name;});
+        
+        for (let j = 0; j < state_keys.length; j++) {
+            /* Remove the cendidate from the state results */
+            let state = states_dict[state_keys[j]];
+            let state_results = state.results;
+            delete state_results[candidate_names[i]];
+            
+            /*If the candidate "won" a state, change the state colour to back to default*/
+            let state_element = document.getElementById(state.id);
+            console.log(state_element.style.fill);
+            if (state_element.style.fill === candidate.colour) {
+                state_element.style.fill = "#cccccc";
+            }
+        }
+    }
     
     candidates_list = candidates_list.filter(function (candidate) {
         return !candidate_names.includes(candidate.name);
     });
-    
-    /*Todo: you need to also update the map to remove any states they won etc.*/
 }
 
 
@@ -245,6 +265,24 @@ function retabulate_percentages(results_list) {
 }
 
 
+function get_none_at_threshold_results(state_results) {
+    
+    let largest_percent = 0;
+    for (let i = 0; i < candidates_list.length; i++) {
+        if (state_results[candidates_list[i].name] > largest_percent) {
+            largest_percent = state_results[candidates_list[i].name];   
+        }
+    }
+    
+    let results_list = Object.entries(state_results).filter(function (candidate_result) {
+        return candidate_result[1] >= (largest_percent - 10);
+    });
+    
+    return results_list;
+}
+
+
+
 function update_delegate_count(state) {
     /* Implements the democratic algorithm for calculating delegate rationing
        Indepth explanation here http://www.thegreenpapers.com/P20/D-Math.phtml*/
@@ -252,6 +290,11 @@ function update_delegate_count(state) {
     let results_list = Object.entries(state.results).filter(function (candidate_result) {
         return candidate_result[1] >= 15;
     });
+    
+    /* No single candidate has 15% */
+    if (results_list.length === 0) {
+        results_list = get_none_at_threshold_results(state.results);
+    }
     
     results_list = retabulate_percentages(results_list);
     
@@ -269,8 +312,7 @@ function update_delegate_count(state) {
         return remainder_b[1] - remainder_a[1];
     });
     
-    console.log(results_remainders);
-    
+    /* Add the delegates earned to each candidate in the candidates_list */
     for (i = 0; i < results_list.length; i++) {
         let index = candidates_list.findIndex((candidate) => {
             return candidate.name === results_list[i][0]
@@ -280,7 +322,8 @@ function update_delegate_count(state) {
         candidates_list[index].delegates += results_list[i][1];
     }
     
-    while(delegates_apportioned < state.delegates) {
+    /* Some times there are delegates remaining, award them to those with the highest remainder */
+    while (delegates_apportioned < state.delegates) {
         let index = candidates_list.findIndex((candidate) => {
             return candidate.name === results_remainders[0][0]
         });
@@ -308,7 +351,6 @@ function record_state_results(results_dict) {
     let state = document.getElementById(map_state.currently_selected_state);
     state.style.fill = top_candidate.colour;
     
-    /* Todo: Calculate how many delegates each candidate gets and add them to the candidates totals */
     update_delegate_count(states_dict[map_state.currently_selected_state]);
 }
 
