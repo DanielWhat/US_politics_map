@@ -121,6 +121,7 @@ function load_map() {
 }
 
 
+
 function get_map_json_url () {
     const url_variables = new URLSearchParams(window.location.search);
     const code = url_variables.get('code');
@@ -130,6 +131,7 @@ function get_map_json_url () {
         return null;
     }
 }
+
 
 
 function get_map_json_str () {
@@ -406,6 +408,7 @@ function update_delegate_count(state) {
 }
 
 
+
 function remove_old_delegate_count(delegate_results_dict) {
     /* Takes the old delegate_results for a state, and removes them from the candidates' delegate counts*/
     
@@ -513,9 +516,13 @@ document.getElementById('remove-candidate-form').addEventListener('submit', func
     refresh_candidates();
 });
 
+
+
 document.getElementById('save-map-form').addEventListener('submit', function(e) {
     e.target.elements.data.value = JSON.stringify({'candidates': candidates_list, 'states': states_dict});
 });
+
+
 
 load_map();
 
