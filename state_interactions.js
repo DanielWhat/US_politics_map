@@ -478,10 +478,20 @@ document.getElementById('add-candidate-form').addEventListener('submit', functio
     
     let name = e.target.elements.candidate_name.value;
     let colour = e.target.elements.colour.value;
-    let new_candidate = new Candidate(name, colour);
-    candidates_list.push(new_candidate);
-    e.target.reset();
-    refresh_candidates();
+    
+    let is_name_taken = false;
+    candidates_list.forEach(function(candidate) {
+        is_name_taken = is_name_taken || candidate.name === name;
+    });
+    
+    if (!is_name_taken) {
+        let new_candidate = new Candidate(name, colour);
+        candidates_list.push(new_candidate);
+        e.target.reset();
+        refresh_candidates();  
+    } else {
+        alert('That candidate name is already taken.');
+    }
 });
 
 
