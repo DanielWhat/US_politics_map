@@ -8,12 +8,14 @@ class Candidate {
 
 
 class State {
-    constructor (id, name, delegates, primary_type, results={}) {
+    constructor (id, name, delegates, primary_type, colour="#cccccc", results={}, delegate_results={}) {
         this.id = id;
         this.name = name;
         this.delegates = delegates;
         this.primary_type = primary_type;
+        this.colour = colour;
         this.results = results;
+        this.delegate_results = delegate_results;
     }
 }
 
@@ -23,17 +25,21 @@ const map_state = {
 };
 
 
-const states_dict = {
+let states_dict = {
     "AL": new State("AL", "Alabama", 52, "Open primary"), 
     "AK": new State("AK", "Alaska", 14, "Closed caucus"), 
+    "AS": new State("AS", "American Samoa", 6, "Closed caucus"),
     "AZ": new State("AZ", "Arizona", 67, "Closed primary"), 
     "AR": new State("AR", "Arkansas", 31, "Open primary"),
     "CA": new State("CA", "California", 416, "Semi-closed primary"),
     "CO": new State("CO", "Colorado", 67, "Closed caucus"),
     "CT": new State("CT", "Connecticut", 49, "Closed primary"),
     "DE": new State("DE", "Delaware", 17, "Closed primary"),
+    "DA": new State("DA", "Democrats Abroad", 13, "Closed primary"),
+    "DC": new State("DC", "District of Columbia", 17, "Closed primary"),
     "FL": new State("FL", "Florida", 219, "Closed primary"),
     "GA": new State("GA", "Georgia", 105, "Open primary"),
+    "GU": new State("GU", "Guam", 6,"Closed caucus"),
     "HI": new State("HI", "Hawaii", 22, "Semi-closed caucus"),
     "ID": new State("ID", "Idaho", 20, "Open caucus"),
     "IL": new State("IL", "Illinois", 155, "Open primary"),
@@ -58,10 +64,12 @@ const states_dict = {
     "NY": new State("NY", "New York", 224, "Closed primary"),
     "NC": new State("NC", "North Carolina", 110, "Semi-closed primary"),
     "ND": new State("ND", "North Dakota", 14, "Open caucus"),
+    "MP": new State("MP", "Northern Marianas", 6, "Closed caucus"),
     "OH": new State("OH", "Ohio", 136, "Semi-open primary"),
     "OK": new State("OK", "Oklahoma", 37, "Semi-closed primary"),
     "OR": new State("OR", "Oregon", 52, "Closed primary"),
     "PA": new State("PA", "Pennsylvania", 153, "Closed primary"),
+    "PR": new State("PR", "Puerto Rico", 51, "Open primary"),
     "RI": new State("RI", "Rhode Island", 31, "Semi-closed primary"),
     "SC": new State("SC", "South Carolina", 54, "Open primary"),
     "SD": new State("SD", "South Dakota", 14, "Semi-closed primary"),
@@ -69,6 +77,7 @@ const states_dict = {
     "TX": new State("TX", "Texas", 228, "Open primary"),
     "UT": new State("UT", "Utah", 29, "Semi-open caucus"),
     "VT": new State("VT", "Vermont", 16, "Open primary"),
+    "VI": new State("VI", "Virgin Islands", 6, "Closed caucus"),
     "VA": new State("VA", "Virginia", 99, "Open primary"),
     "WA": new State("WA", "Washington", 89, "Open caucus"),
     "WV": new State("WV", "West Virginia", 24, "Semi-closed primary"),
@@ -78,6 +87,58 @@ const states_dict = {
 
 
 let candidates_list = [];
+
+
+function load_map_data(data, url) {
+    
+    candidates_list = data['candidates'];
+    states_dict = data['states'];
+    
+    let states_keys = Object.keys(states_dict);
+    for (let i = 0; i < states_keys.length; i++) {
+        let state_element = document.getElementById(states_keys[i]);
+        state_element.style.fill = states_dict[states_keys[i]].colour;
+    }
+    
+    document.getElementById('share-link').innerHTML = `<p class="body-text shareable-text">Your sharable link is: <a href="${window.location.href}">${window.location.href}</a></p>`;
+    
+    refresh_candidates();
+}
+
+
+
+function load_map() {
+    /* Loads a preset map */
+    
+    let url = get_map_json_url();
+    
+    if (url !== null) {
+        
+        fetch(url)
+            .then((res) => {return res.json()})
+            .then((data) => {load_map_data(data)})
+    }
+}
+
+
+function get_map_json_url () {
+    const url_variables = new URLSearchParams(window.location.search);
+    const code = url_variables.get('code');
+    if (code !== null) {
+        return`./maps/${code}.json`;
+    } else {
+        return null;
+    }
+}
+
+
+function get_map_json_str () {
+    let data = {'candidates': candidates_list, 'states': states_dict};
+    return JSON.stringify(data);
+}
+
+
+
 
 
 function display_state_data(event) {
@@ -138,6 +199,7 @@ function close_remove_candidate() {
 }
 
 
+
 function set_form_add_event_handler() {
     document.getElementById('state-results-form').addEventListener('input', function (e) {
         let form = document.getElementById('state-results-form');
@@ -146,7 +208,7 @@ function set_form_add_event_handler() {
         
         for(let i = 0; i < form.elements.length; i++) {
             if (form.elements[i].type === "number") {
-                allocated_percent += parseFloat(form.elements[i].value);
+                allocated_percent += (form.elements[i].value !== "") ? parseFloat(form.elements[i].value) : 0;
             }
         }
         
@@ -187,7 +249,7 @@ function refresh_state_data() {
         state_html += `<li><p class="body-text">${candidates_list[i].name}: <input class="candidate-percentage-input" type="number" min="0" max="100" value="${value}" name="${candidates_list[i].name}" step="0.1" required> %</p></li>`
     }
     
-    state_html += `</ul><div class='bottom-state-box'><button class='submit-button submit-results' type='submit'>Confirm Results</button><p class='body-text note-text' id='unallocated-note'>${100 - allocated_percent}% of the vote is unallocated</p></div></form>`;
+    state_html += `</ul><div class='bottom-state-box'><p class='body-text note-text' id='unallocated-note'>${100 - allocated_percent}% of the vote is unallocated</p><button class='submit-button submit-results' type='submit'>Confirm Results</button></div></form>`;
     state_info.innerHTML = state_html;
     
     set_form_add_event_handler();
@@ -234,9 +296,10 @@ function remove_candidates(candidate_names) {
             
             /*If the candidate "won" a state, change the state colour to back to default*/
             let state_element = document.getElementById(state.id);
-            console.log(state_element.style.fill);
+
             if (state_element.style.fill === candidate.colour) {
                 state_element.style.fill = "#cccccc";
+                state.colour = "#cccccc";
             }
         }
     }
@@ -245,6 +308,7 @@ function remove_candidates(candidate_names) {
         return !candidate_names.includes(candidate.name);
     });
 }
+
 
 
 function retabulate_percentages(results_list) {
@@ -258,11 +322,12 @@ function retabulate_percentages(results_list) {
     }
         
     for (i = 0; i < results_list.length; i++) {
-        results_list[i][1] = (results_list[i][1] / running_sum_of_percent); 
+        results_list[i][1] = (results_list[i][1] / running_sum_of_percent) || 0; 
     }
     
     return results_list;
 }
+
 
 
 function get_none_at_threshold_results(state_results) {
@@ -296,7 +361,11 @@ function update_delegate_count(state) {
         results_list = get_none_at_threshold_results(state.results);
     }
     
+    console.log(results_list);
+    
     results_list = retabulate_percentages(results_list);
+    
+    console.log(results_list);
     
     let results_remainders = [];
     /* Now the second entry in the results_list will be the estimate delegate count for that candidate */
@@ -320,6 +389,7 @@ function update_delegate_count(state) {
         
         delegates_apportioned += results_list[i][1];
         candidates_list[index].delegates += results_list[i][1];
+        state.delegate_results[candidates_list[index].name] = results_list[i][1];
     }
     
     /* Some times there are delegates remaining, award them to those with the highest remainder */
@@ -329,27 +399,39 @@ function update_delegate_count(state) {
         });
         
         candidates_list[index].delegates++;
+        state.delegate_results[candidates_list[index].name]++;
         delegates_apportioned++;
         results_remainders.shift();
     }
+}
+
+
+function remove_old_delegate_count(delegate_results_dict) {
+    /* Takes the old delegate_results for a state, and removes them from the candidates' delegate counts*/
     
+    for (let i = 0; i < candidates_list.length; i++) {
+        candidates_list[i].delegates -= delegate_results_dict[candidates_list[i].name] || 0;
+    }    
 }
 
 
 
 function record_state_results(results_dict) {
     
+    remove_old_delegate_count(states_dict[map_state.currently_selected_state].delegate_results);
+    
     states_dict[map_state.currently_selected_state].results = results_dict;
     let results_array = Object.entries(results_dict);
     
     results_array = results_array.sort(function (item_a, item_b) {
         return item_a[1] - item_b[1];
-    })
+    });
     
     let top_candidate_name = results_array[candidates_list.length - 1][0];
     let top_candidate = candidates_list.find((candidate) => {return candidate.name === top_candidate_name;});
     let state = document.getElementById(map_state.currently_selected_state);
     state.style.fill = top_candidate.colour;
+    states_dict[map_state.currently_selected_state].colour = top_candidate.colour;
     
     update_delegate_count(states_dict[map_state.currently_selected_state]);
 }
@@ -367,6 +449,10 @@ function results_str_to_float(results_dict) {
 
 function state_results_handler(e) {
     e.preventDefault();
+    
+    /*The map has now changed so the share link must be removed*/
+    document.getElementById('share-link').innerHTML = "";
+    
     let results_dict = {};
     
     for (let i = 0; i < candidates_list.length; i++) {
@@ -385,6 +471,10 @@ function state_results_handler(e) {
 
 document.getElementById('add-candidate-form').addEventListener('submit', function (e) {
     e.preventDefault();
+    
+    /*The map has now changed so the share link must be removed*/
+    document.getElementById('share-link').innerHTML = "";
+    
     let name = e.target.elements.candidate_name.value;
     let colour = e.target.elements.colour.value;
     let new_candidate = new Candidate(name, colour);
@@ -397,6 +487,11 @@ document.getElementById('add-candidate-form').addEventListener('submit', functio
 
 document.getElementById('remove-candidate-form').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    /*The map has now changed so the share link must be removed*/
+    document.getElementById('share-link').innerHTML = "";
+    /*<p class="body-text shareable-text">Your sharable link is: <a href="http://danielwhat.tk/usa/index.html?code=432fcabf2ba6f67847145bb29bcc0ab7">http://danielwhat.tk/usa/index.html?code=432fcabf2ba6f67847145bb29bcc0ab7</a></p>*/
+    
     let candidate_names_to_remove = [];
     
     if (e.target.elements.candidates === undefined) { /* prevent the function from running if someone submits without any candidates */
@@ -417,3 +512,10 @@ document.getElementById('remove-candidate-form').addEventListener('submit', func
     remove_candidates(candidate_names_to_remove);
     refresh_candidates();
 });
+
+document.getElementById('save-map-form').addEventListener('submit', function(e) {
+    e.target.elements.data.value = JSON.stringify({'candidates': candidates_list, 'states': states_dict});
+});
+
+load_map();
+

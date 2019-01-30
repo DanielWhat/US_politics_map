@@ -11,6 +11,7 @@ html, body {
 
 .map-container {
     float: left;
+    position: relative;
 }
 
 .info-container {
@@ -59,8 +60,7 @@ html, body {
 }
 
 .note-text {
-    float: right;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .candidate-name {
@@ -191,3 +191,23 @@ html, body {
     bottom: 10px;
     width: calc(100% - 10px * 2); /* 100% - info-container(padding)*/
 }
+
+#save-map-form {
+    position: absolute;
+    left: 520px;
+    top: 535px;
+    
+}
+
+.shareable-text {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.close_button {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+}
+
+
