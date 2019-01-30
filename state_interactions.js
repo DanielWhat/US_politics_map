@@ -141,8 +141,6 @@ function get_map_json_str () {
 
 
 
-
-
 function display_state_data(event) {
     /*Displays the data for a state when a state is clicked*/
     
