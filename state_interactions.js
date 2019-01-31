@@ -169,7 +169,7 @@ function open_add_candidate() {
     /* Opens the add_candidate dialogue box */
     
     let display_div = document.getElementById('add-candidate-popup');
-    display_div.style.display = "inherit";
+    display_div.style.display = "inline";
     close_remove_candidate(); /* Close remove candidate if it's open */
 }
 
@@ -186,7 +186,7 @@ function close_add_candidate() {
 
 function open_remove_candidate() {
     let display_div = document.getElementById('remove-candidate-popup');
-    display_div.style.display = "inherit";
+    display_div.style.display = "inline";
     close_add_candidate(); /* Close add candidate box if it's open */
 }
 

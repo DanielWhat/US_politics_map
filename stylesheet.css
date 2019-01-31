@@ -4,9 +4,10 @@ html, body {
 }
 
 .main-content {
+    display: flex;
+    align-items: stretch;
     box-sizing: border-box;
     padding-top: 5px;
-    height: 100%;
 }
 
 .map-container {
@@ -19,12 +20,16 @@ html, body {
     float: right; 
     width: calc(100% - 959px - 5px * 2 - 2px * 2 - 10px * 2); /* 100% - width(svg_map) - margin(info-container) * 2 - border(info-container) * 2 - padding(info-container) * 2*/
     border-radius: 8px;
-    height: calc(100% - 5px * 2 - 30px - 2px * 2 - 10px * 2); /* 100% - margin(info-container) * 2 - font-size(title-text) - border(info-container) * 2 - padding(info-container) * 2*/ 
-    margin: 5px;
+    /*height: calc(100% - 5px * 2 - 30px - 2px * 2 - 10px * 2);*/ /* 100% - margin(info-container) * 2 - font-size(title-text) - border(info-container) * 2 - padding(info-container) * 2*/ 
+    margin: 0 5px 5px 5px;
     background-color: rgb(245, 245, 245);
     border: solid rgb(124, 176, 255) 2px; /* rgb(98, 98, 247) rgb(124, 124, 249) rgb(124, 176, 255)*/
     padding: 10px;
     z-index: 1;
+}
+
+.no-flex {
+    display: inline;
 }
 
 .title-text {
@@ -75,10 +80,12 @@ html, body {
 
 .add-candidates {
     padding: 10px;
-    width: calc(100% - 5px - 10px * 2); /* 100%  - margin(add-candidates) - padding(add-candidates) * 2*/
+    width: calc(100% - 5px - 10px * 2 - 2 * 2px); /* 100%  - margin-left(add-candidates) - padding(add-candidates) * 2 - border(add-candidates) * 2*/
+    min-height: calc(100% - 592.78998px - 2 * 10px - 5px - 2 * 2px - 30px - 10px); /*100% - map_height - margin-top(self) - 2*padding(self) - font-size(title-text) */
     background-color: rgb(245, 245, 245);
     border-radius: 7px;
     margin: 0 0 5px 5px;
+    border: solid rgb(124, 176, 255) 2px;
 }
 
 .colour-div {
@@ -195,7 +202,7 @@ html, body {
 #save-map-form {
     position: absolute;
     left: 520px;
-    top: 535px;
+    top: 565px;
     
 }
 
